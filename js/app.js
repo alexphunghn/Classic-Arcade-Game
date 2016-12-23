@@ -38,64 +38,60 @@ Enemy.prototype.render = function() {
 // a handleInput() method.
 var Player = function () {
   this.sprite = 'images/char-boy.png';
-  this.x = 2;
-  this.y = 0;
+  this.x = 200;
+  this.y = 400;
 
 };
 
 Player.prototype.update = function(){
-  this.Collisions();
+  this.collisions();
 
   //or player wins!
-  if (this.y >= 500) {
+  if (this.y <= 0) {
     console.log('Congratulations!');
     this.reset();
   }
 };
 
-Player.prototype.Collisions = function(){
-  for (var i = 0; i < allEnemies.length; i++) {
-    /*add calculation to determine row*/
-    if (this.x >= Enemy.x + 0 &&
-        this.x < Enemy.x + 30 &&
-        this.y >= Enemy.y + 0 &&
-        this.y < Enemy.y + 30) {
-          console.log('Sorry!');
-
-        }
+Player.prototype.collisions = function(){
+  enemyBox = {x: this.x, y: this.y};
+  playerBox = {x: player.x, y: player.y};
+  if ((enemyBox.x < (playerBox.x + 68)) && ((enemyBox.x + 98) > playerBox.x) && (enemyBox.y < (playerBox.y + 63)) && ((69 + enemyBox.y) > playerBox.y))
+    {
+      console.log("Collisions!");
     }
-
 };
 
+
 Player.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x * 103, this.y + 400);
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
 Player.prototype.reset = function() {
-  this.x = 2;
-  this.y = 0;
+  this.x = 200;
+  this.y = 390;
 };
 
 Player.prototype.handleInput = function(allowedKeys){
   switch (allowedKeys) {
     case 'left':
     if (this.x > 0){
-      this.x--;
+      this.x -= 60;
     } break;
 
     case 'down':
-    if (this.y <= 100){
-      this.y = this.y + 80;
+    if (this.y < 390){
+      this.y += 60;
     } break;
 
     case 'up':
-    if (this.y >= 0){
-      this.y = this.y - 80;
+    if (this.y > 10){
+      this.y -= 60;
     } break;
 
     case 'right':
-    if (this.x < 4){
-      this.x++;
+    if (this.x < 380){
+      this.x += 60;
     } break;
 
 
@@ -118,6 +114,7 @@ var player = new Player();
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function(e) {
+    // console.log(e.keyCode);
     var allowedKeys = {
         37: 'left',
         38: 'up',
